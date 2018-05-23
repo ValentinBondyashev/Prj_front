@@ -4,6 +4,8 @@ import './Dashboard.scss';
 import {DataTable} from 'primereact/components/datatable/DataTable';
 import {Column} from 'primereact/components/column/Column';
 import {InputText} from 'primereact/components/inputtext/InputText';
+import { Row } from 'primereact/components/row/Row';
+
 import {Dropdown} from 'primereact/components/dropdown/Dropdown';
 
 import 'primereact/resources/primereact.min.css';
@@ -16,19 +18,23 @@ class Dashboard extends Component {
         super();
         this.state = {
             cars: [ 
-            {brand: 'Apple', vin: '51%', color: '40%', year: '$54,406.00', thisYearProfit: '$43,342'},
-            {brand: 'Samsung', vin: '83%', color: '96%', year: '$423,132', thisYearProfit: '$312,122'},
-            {brand: 'Microsoft', vin: '38%', color: '5%', year: '$12,321', thisYearProfit: '$8,500'},
-            {brand: 'Philips', vin: '49%', color: '22%', year: '$745,232', thisYearProfit: '$650,323,'},
-            {brand: 'Song', vin: '17%', color: '79%', year: '$643,242', thisYearProfit: '500,332'},
-            {brand: 'LG', vin: '52%', color: ' 65%', year: '$421,132', thisYearProfit: '$150,005'},
-            {brand: 'Sharp', vin: '82%', color: '12%', year: '$131,211', thisYearProfit: '$100,214'},
-            {brand: 'Panasonic', vin: '44%', color: '45%', year: '$66,442', thisYearProfit: '$53,322'},
-            {brand: 'HTC', vin: '90%', color: '56%', year: '$765,442', thisYearProfit: '$296,232'},
-            {brand: 'Toshiba', vin: '75%', color: '54%', year: '$21,212', thisYearProfit: '$12,533'}
+                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
+                {technology: 'ReactJS', mark: '10', disposition: '10', comment: "Воу воу воу"},
+                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
+                {technology: 'ReactJS', mark: '10', disposition: '10', comment: "Воу воу воу"},
+                {technology: 'ReactJS', mark: '10', disposition: '10', comment: "Воу воу воу"},
+                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
+                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
+                {technology: 'ReactJS', mark: '10', disposition: '10', comment: "Воу воу воу"},
+                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
+                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
+                {technology: 'ReactJS', mark: '10', disposition: '10', comment: "Воу воу воу"},
+                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
             ]
         };
         this.editor = this.editor.bind(this);
+        this.headerTemplate = this.headerTemplate.bind(this);
+        this.footerTemplate = this.footerTemplate.bind(this);
     }
 
     
@@ -36,6 +42,27 @@ class Dashboard extends Component {
         let updatedCars = [...props.value];
         updatedCars[props.rowIndex][props.field] = value;
         this.setState({cars: updatedCars});
+    }
+
+    footerTemplate(data, index) {
+        return ([
+                    
+            ]
+        );
+    }
+    
+    calculateGroupTotal(brand) {
+        let total = 0;
+        
+        if(this.state.cars) {
+            for(let car of this.state.cars) {
+                if(car.brand === brand) {
+                    total += car.price;
+                }
+            }
+        }
+
+        return total;
     }
     
     inputTextEditor(props) {
@@ -52,26 +79,25 @@ class Dashboard extends Component {
         let value = props.rowData[props.field];
         return value && value.length > 0;
     }
-
+    headerTemplate(data) {
+        console.log(data);
+        return data.technology;
+    }
     render() {
-        let cols = [
-            {field: 'vin', header: 'Vin'},
-            {field: 'year', header: 'Year'},
-            {field: 'brand', header: 'Brand'},
-            {field: 'color', header: 'Color'}
-        ]; 
+        
 
-        let dynamicColumns = cols.map((col,i) => {
-            return <Column key={col.field} field={col.field} editor={this.editor} header={col.header} />;
-        });
+       
         return (
             <div>
-
+                
                 
                 <div className="content-section implementation">
-                    <DataTable value={this.state.cars} editable={true}>
-                    {dynamicColumns}
-                    </DataTable>
+                <DataTable header="Технологии" sortField="technology" sortOrder={1} value={this.state.cars} rowGroupMode="subheader"  groupField="technology" rowGroupFooterTemplate={this.footerTemplate}  rowGroupHeaderTemplate={this.headerTemplate} >           
+                    <Column field="technology" header="technology" editor={this.editor}/>
+                    <Column field="mark" header="mark" editor={this.editor}/>
+                    <Column field="disposition" header="disposition" editor={this.editor}/>
+                    <Column field="comment" header="comment" editor={this.editor}/>
+                </DataTable>
                 </div>
             </div>
         );
