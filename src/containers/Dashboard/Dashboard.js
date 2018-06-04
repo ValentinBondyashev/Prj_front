@@ -4,43 +4,42 @@ import './Dashboard.scss';
 import {DataTable} from 'primereact/components/datatable/DataTable';
 import {Column} from 'primereact/components/column/Column';
 import {InputText} from 'primereact/components/inputtext/InputText';
-import { Row } from 'primereact/components/row/Row';
-
-import {Dropdown} from 'primereact/components/dropdown/Dropdown';
-
+import { connect } from 'react-redux';
+import { getSkillsAction, editSkillsAction } from '../../actions/skill'; 
 import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/omega/theme.css';
 import 'font-awesome/css/font-awesome.css';
-
+import Chart from '../../components/charts/test'
 import axios from 'axios';
 class Dashboard extends Component {
     constructor() {
         super();
         this.state = {
-            cars: [ 
-                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
-                {technology: 'ReactJS', mark: '10', disposition: '10', comment: "Воу воу воу"},
-                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
-                {technology: 'ReactJS', mark: '10', disposition: '10', comment: "Воу воу воу"},
-                {technology: 'ReactJS', mark: '10', disposition: '10', comment: "Воу воу воу"},
-                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
-                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
-                {technology: 'ReactJS', mark: '10', disposition: '10', comment: "Воу воу воу"},
-                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
-                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
-                {technology: 'ReactJS', mark: '10', disposition: '10', comment: "Воу воу воу"},
-                {technology: 'Angular', mark: '10', disposition: '10', comment: "Воу воу воу"},
+            skills: [ 
+               
             ]
         };
         this.editor = this.editor.bind(this);
         this.headerTemplate = this.headerTemplate.bind(this);
         this.footerTemplate = this.footerTemplate.bind(this);
+        this.onRowUnselect = this.onRowUnselect.bind(this);
+        this.onEnter = this.onEnter.bind(this);
     }
-
+    componentWillMount() {
+        this.props.getSkillsFunction();
+    }
     
     onEditorValueChange(props, value) {
         let updatedCars = [...props.value];
-        updatedCars[props.rowIndex][props.field] = value;
+        
+        for(let i=0; i < updatedCars.length; i++) {
+            if(updatedCars[i]['id'] === props['rowData']['id']) {
+                updatedCars[i][props.field] = value;
+            }
+        }
+        
+        
+        
         this.setState({cars: updatedCars});
     }
 
@@ -51,77 +50,64 @@ class Dashboard extends Component {
         );
     }
     
-    calculateGroupTotal(brand) {
-        let total = 0;
-        
-        if(this.state.cars) {
-            for(let car of this.state.cars) {
-                if(car.brand === brand) {
-                    total += car.price;
-                }
-            }
-        }
-
-        return total;
-    }
+   
     
     inputTextEditor(props) {
-        return <InputText type="text" value={props.rowData[props.field]} onChange={(e) => this.onEditorValueChange(props, e.target.value)} />;
+       
+        return <InputText onKeyDown={(e) => this.onEnter(props, e.target.value, e.keyCode)} onBlur={(e) => this.onRowUnselect(props, e.target.value)} type="text" value={props.rowData[props.field]} onChange={(e) => this.onEditorValueChange(props, e.target.value)} />;
     }
     
     
     editor(props) {
-        console.log(props);
         return this.inputTextEditor(props);
     }
-        
-    requiredValidator(props) {
-        let value = props.rowData[props.field];
-        return value && value.length > 0;
-    }
+    
     headerTemplate(data) {
-        console.log(data);
-        return data.technology;
+        return data.skillCategoryTitle;
+    }
+
+    onRowUnselect(props, value) {
+        this.props.editSkillFunction(props['rowData']);
+    }
+    onEnter(props, value, key) {
+        if(key === 13) {
+            this.props.editSkillFunction(props['rowData']);
+        }
     }
     render() {
-        
 
-       
         return (
             <div>
-                
-                
                 <div className="content-section implementation">
-                <DataTable header="Технологии" sortField="technology" sortOrder={1} value={this.state.cars} rowGroupMode="subheader"  groupField="technology" rowGroupFooterTemplate={this.footerTemplate}  rowGroupHeaderTemplate={this.headerTemplate} >           
-                    <Column field="technology" header="technology" editor={this.editor}/>
-                    <Column field="mark" header="mark" editor={this.editor}/>
-                    <Column field="disposition" header="disposition" editor={this.editor}/>
-                    <Column field="comment" header="comment" editor={this.editor}/>
+                <DataTable header="Технологии"  value={this.props.skills} rowGroupMode="subheader"  groupField="skillCategoryTitle" rowGroupFooterTemplate={this.footerTemplate}  rowGroupHeaderTemplate={this.headerTemplate} >           
+                    <Column field="skillTitle" header="Технология"/>
+                    <Column field="mark" header="Скилл" editor={this.editor}/>
+                    <Column field="disposition" header="Желание" editor={this.editor}/>
+                    <Column field="comment" header="Комментарий" editor={this.editor}/>
                 </DataTable>
                 </div>
+          
             </div>
         );
     }
     }
     
    
-
-    export class CarService {
-        
-        getCarsSmall() {
-            return axios.get('showcase/resources/demo/data/cars-small.json')
-                    .then(res => res.data.data);
-        }
-    
-        getCarsMedium() {
-            return axios.get('showcase/resources/demo/data/cars-medium.json')
-                    .then(res => res.data.data);
-        }
-    
-        getCarsLarge() {
-            return axios.get('showcase/resources/demo/data/cars-large.json')
-                    .then(res => res.data.data);
-        }
+    function mapStateToProps(state) {
+        console.log(state);
+        return { 
+            skills: state.skill.skills.data
+        };
+    }
+    function mapDispathToProps(dispatch) {
+        return {
+            getSkillsFunction: function () {
+                dispatch(getSkillsAction());
+            },
+            editSkillFunction: function (skill) {
+                dispatch(editSkillsAction(skill));
+            }
+        };
     }
 
-export default Dashboard;
+export default connect(mapStateToProps,mapDispathToProps)(Dashboard);

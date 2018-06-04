@@ -22,15 +22,12 @@ class Login extends Component {
 
   login() {
     this.props.loginFunction(this.state.email, this.state.password);
-    
   }
     
   handleChangeEmail(e) {
-   
     this.setState({ email: e.target.value });
   }
   handleChangePassword(e) {
-   
     this.setState({ password: e.target.value });
   }
   componentWillReceiveProps(nextProps) {

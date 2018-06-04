@@ -2,11 +2,6 @@ import axios from 'axios';
 import firebase from 'firebase';
 
 
-axios.interceptors.request.use((config)=>{  
-  const token = localStorage.getItem("token");
-  config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
 
 var config = {
   apiKey: "AIzaSyBYUcC7uW6MsyKH4iDPKrnL5slUId1Hbs8",

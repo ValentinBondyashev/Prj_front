@@ -7,7 +7,7 @@ import Dashboard from '../Dashboard/Dashboard';
 import { connect } from 'react-redux';
 import loginAction, { checkAuthAction } from '../../actions/auth'; 
 import PrivateRoute from '../../components/Routes/private-route';
-
+import NoAuthRoute from '../../components/Routes/no-auth-route';
 
 class App extends Component {
 
@@ -21,8 +21,8 @@ class App extends Component {
         <div className="App">
           <MuiThemeProvider>
             <Switch>
-              <Route exact path='/' component={Login}/>
-              <Route  path='/login' component={Login}/>
+              <NoAuthRoute exact path='/' component={Login}/>
+              <NoAuthRoute  path='/login' component={Login}/>
               <PrivateRoute  path='/dashboard' component={Dashboard}/>
             </Switch>
           </MuiThemeProvider>
