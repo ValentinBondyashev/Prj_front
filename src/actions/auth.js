@@ -4,14 +4,13 @@ import firebase from 'firebase';
 
 
 var config = {
-  apiKey: "AIzaSyBYUcC7uW6MsyKH4iDPKrnL5slUId1Hbs8",
-  authDomain: "yourskills-346f1.firebaseapp.com",
-  databaseURL: "https://yourskills-346f1.firebaseio.com",
-  projectId: "yourskills-346f1",
-  storageBucket: "yourskills-346f1.appspot.com",
-  messagingSenderId: "610815753439"
+  apiKey: "AIzaSyDVu1y_aQRqWwVtPrWG3pja-KwO2F18Ahg",
+  authDomain: "my-skills-b62f7.firebaseapp.com",
+  databaseURL: "https://my-skills-b62f7.firebaseio.com",
+  projectId: "my-skills-b62f7",
+  storageBucket: "my-skills-b62f7.appspot.com",
+  messagingSenderId: "398652311383"
 };
-
 
 
 export const loginAction = (email, password) => dispatch => {
@@ -41,8 +40,7 @@ export const loginAction = (email, password) => dispatch => {
 }
 
 export function checkAuthAction() {
-
-    
+  
     let token = localStorage.getItem('token');
     return { 
       type: 'CHECK_AUTH', 
@@ -50,5 +48,6 @@ export function checkAuthAction() {
         token: token === null ? "" : token
       }
     }
-
+   
+   
 }

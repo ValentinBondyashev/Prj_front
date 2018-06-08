@@ -1,5 +1,6 @@
 let defaultState = {
-    skills: []
+    skills: [],
+    id: []
 };
 
 export function skill(state = defaultState, action) {
@@ -8,6 +9,8 @@ export function skill(state = defaultState, action) {
             return {...state, skills: action.payload};
         case 'SUCCES_PUT_SKILLS':
             return {...state };
+        case 'GET_ID_SKILLS':
+            return {...state, id: action.payload};
         default:
             return state;
     }

@@ -36,14 +36,14 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return { 
-      token: state.auth.token,
+    token: state.auth.token,
   };
 }
 function mapDispathToProps(dispatch) {
   return {
-      checkAuthFunction: () => {
-          dispatch(checkAuthAction());
-      }
+    checkAuthFunction: () => {
+      dispatch(checkAuthAction());
+    }
   };
 }
 
