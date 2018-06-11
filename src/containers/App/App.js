@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Switch, Route, Redirect, BrowserRouter } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Login from '../Login/Login';
+import Register from '../Register/Register';
 import './App.scss';
 import Dashboard from '../Dashboard/Dashboard';
 import { connect } from 'react-redux';
@@ -23,6 +24,7 @@ class App extends Component {
             <Switch>
               <NoAuthRoute exact path='/' component={Login}/>
               <NoAuthRoute  path='/login' component={Login}/>
+              <NoAuthRoute  path='/register' component={Register}/>
               <PrivateRoute  path='/dashboard' component={Dashboard}/>
             </Switch>
           </MuiThemeProvider>

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import './Login.scss';
+import './Register.scss';
 import { Card, CardText, CardActions } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Button } from 'primereact/components/button/Button';
-import { connect } from 'react-redux';
-import { loginAction } from '../../actions/auth'; 
+import { registerAction } from '../../actions/register'; 
+import { connect } from 'react-redux'; 
 import { Link } from 'react-router-dom';
-class Login extends Component {
+
+class Register extends Component {
   constructor(props) {
 
     super(props);
@@ -15,27 +16,31 @@ class Login extends Component {
         email: '',
         password: ''
     };
-    this.login = this.login.bind(this);
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
 
   }
 
-  login() {
-    this.props.loginFunction(this.state.email, this.state.password);
-  }
-    
-  handleChangeEmail(e) {
-    this.setState({ email: e.target.value });
-  }
-  handleChangePassword(e) {
-    this.setState({ password: e.target.value });
-  }
-  componentWillReceiveProps(nextProps) {
+ 
+  componentWillReceiveProps = (nextProps) => {
     if(nextProps.status === 'success'){
         this.props.history.push("/dashboard");
     }
   }
+
+  register = () => {
+    this.props.registerFunction(this.state.email, this.state.password);
+  }
+
+  handleChangeEmail = (e) => {
+    this.setState({ email: e.target.value });
+  }
+
+  handleChangePassword = (e) =>{
+    this.setState({ password: e.target.value });
+  }
+
+
   render() {
     return (
         <div className="general">        
@@ -45,7 +50,6 @@ class Login extends Component {
                         name="email" 
                         value={this.state.email}  
                         onChange={this.handleChangeEmail} 
-                        errorText={this.props.status === 'error' ?  "Логин или пароль неправильные": ""}
                         floatingLabelText="Login" 
                     />
                     <TextField 
@@ -57,8 +61,8 @@ class Login extends Component {
                     /> 
                 </CardText>
                 <CardActions>
-                    <RaisedButton onClick={this.login} className="login-button" label="Login" primary={true} />
-                    <Button><Link className="link_register" to='/register'>Sign on</Link></Button>
+                    <RaisedButton onClick={this.register} className="register-button" label="Register" primary={true} />
+                    <Button><Link className="link_login" to='/'>Sign in</Link></Button>
                 </CardActions>
             </Card>
         </div>
@@ -68,17 +72,16 @@ class Login extends Component {
 
 function mapStateToProps(state) {
     return { 
-        token: state.auth.token,
-        status: state.auth.status
+        status: state.register.status,
     };
 }
 function mapDispathToProps(dispatch) {
     return {
-        loginFunction: function (email, password) {
-            dispatch(loginAction(email, password));
+        registerFunction: function (email, password){
+            dispatch(registerAction(email, password));
         }
     };
 }
 
-export default connect(mapStateToProps,mapDispathToProps)(Login);
+export default connect(mapStateToProps,mapDispathToProps)(Register);
 

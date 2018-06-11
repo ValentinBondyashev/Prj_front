@@ -1,8 +1,6 @@
 import axios from 'axios';
 import firebase from 'firebase';
 
-
-
 var config = {
   apiKey: "AIzaSyDVu1y_aQRqWwVtPrWG3pja-KwO2F18Ahg",
   authDomain: "my-skills-b62f7.firebaseapp.com",
@@ -15,12 +13,9 @@ var config = {
 
 export const loginAction = (email, password) => dispatch => {
  
-  
   if (!firebase.apps.length) {
     firebase.initializeApp(config);
   }
-
-
 
   firebase.auth().signInWithEmailAndPassword(email, password).then(function(data) {
    localStorage.setItem('token', firebase.auth().currentUser.qa);
@@ -28,26 +23,28 @@ export const loginAction = (email, password) => dispatch => {
    let payload =  {
     token: firebase.auth().currentUser.qa
   };
-
     dispatch({ type: 'LOGIN_SUCCESS', payload: payload });
     
   }).catch(function(error) {
     dispatch({ type: 'LOGIN_ERROR' });
   });
 
-  
-
+}
+export const registerAction = (email, password) => dispatch => {
+  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    });
 }
 
 export function checkAuthAction() {
-  
     let token = localStorage.getItem('token');
     return { 
       type: 'CHECK_AUTH', 
       payload: {
         token: token === null ? "" : token
       }
-    }
-   
-   
+    }  
 }

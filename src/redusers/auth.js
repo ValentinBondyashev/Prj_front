@@ -10,7 +10,7 @@ export function auth(state = defaultState, action) {
         case 'LOGIN_SUCCESS':
             return {...state, token: action.payload.token, status: 'success'};
         case 'LOGIN_ERROR': 
-            return {...state, status: 'error'}
+            return {...state, status: 'error'};
         default:
             return state;
     }

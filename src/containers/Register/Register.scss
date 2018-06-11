@@ -1,4 +1,6 @@
 
+
+
 .general {
     display: flex;
     justify-content: center;
@@ -14,11 +16,11 @@
             display: flex;
             flex-direction: column;
         }
-        .login-button {
+        .register-button {
             width: 100%;
             margin-bottom: 10px;
         }
-        .link_register{
+        .link_login{
             text-decoration: none;
             color: white;
         }

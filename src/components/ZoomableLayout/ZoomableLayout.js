@@ -129,7 +129,7 @@ export default class ZoomableLayout extends Component {
 
   render() {
   return (
-  <div style={{display:"flex", justifyContent: "center"}}>
+  <div style={{display:"flex", justifyContent: "center", background: "#f2f5f9"}}>
     <svg onClick={this.createBar.bind(this)} ref={input => this.input = input}></svg> 
   </div>)
   }

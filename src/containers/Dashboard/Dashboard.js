@@ -6,6 +6,7 @@ import {Dialog} from 'primereact/components/dialog/Dialog';
 import {Button} from 'primereact/components/button/Button';
 import {Column} from 'primereact/components/column/Column';
 import {InputText} from 'primereact/components/inputtext/InputText';
+import {InputTextarea} from 'primereact/components/inputtextarea/InputTextarea';
 import {Dropdown} from 'primereact/components/dropdown/Dropdown';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -50,7 +51,6 @@ class Dashboard extends Component {
 
     footerTemplate(data, index) {
         return ([
-                    
             ]
         );
     }
@@ -170,7 +170,7 @@ class Dashboard extends Component {
                         <div className="ui-grid-row">
                             <div className="ui-grid-col-4" style={{padding:'4px 10px'}}><label htmlFor="colcommentor">Комментарий</label></div>
                             <div className="ui-grid-col-8" style={{padding:'4px 10px'}}>
-                                <InputText id="comment" onChange={(e) => {this.updateProperty('comment', e.target.value)}} value={this.state.skill.comment}/>
+                                <InputTextarea rows={5} cols={30} autoResize={true} id="comment" onChange={(e) => {this.updateProperty('comment', e.target.value)}} value={this.state.skill.comment}/>
                             </div>
                         </div>
                     </div>
